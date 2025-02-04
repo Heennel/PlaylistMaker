@@ -27,7 +27,7 @@
             android:text="@string/settings"
             android:textColor="@color/black"
             android:textSize="22sp"
-            android:layout_marginLeft="64dp"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="12dp"
 
@@ -51,10 +51,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/night_theme"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="21dp"
                 android:layout_marginBottom="21dp"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 >
             </TextView>
             <Switch
@@ -75,19 +75,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/share"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="21dp"
-                android:layout_marginBottom="21dp"
-                android:textSize="16sp"
+                android:layout_marginStart="@dimen/text_margin_start"
+                android:layout_marginVertical="@dimen/text_margin_horizontal"
+                android:textSize="@dimen/text_size"
                 >
             </TextView>
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
                 android:layout_gravity="end"
-                android:scaleType="centerCrop"
-                android:layout_marginRight="18dp"
-                android:layout_marginTop="19dp"
+                android:layout_marginEnd="@dimen/icon_margin_end"
+                android:layout_marginTop="@dimen/icon_margin_top"
                 android:src="@drawable/share" />
         </FrameLayout>
         <FrameLayout
@@ -100,18 +98,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="21dp"
-                android:layout_marginBottom="21dp"
-                android:textSize="16dp"
+                android:layout_marginStart="@dimen/text_margin_start"
+                android:layout_marginVertical="@dimen/text_margin_horizontal"
+                android:textSize="@dimen/text_size"
                 >
             </TextView>
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
                 android:layout_gravity="end"
-                android:layout_marginRight="18dp"
-                android:layout_marginTop="19dp"
+                android:layout_marginEnd="@dimen/icon_margin_end"
+                android:layout_marginTop="@dimen/icon_margin_top"
                 android:src="@drawable/support" />
         </FrameLayout>
         <FrameLayout
@@ -124,18 +121,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_agreement"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="21dp"
-                android:layout_marginBottom="21dp"
-                android:textSize="16dp"
-                >
+                android:layout_marginStart="@dimen/text_margin_start"
+                android:layout_marginVertical="@dimen/text_margin_horizontal"
+                android:textSize="@dimen/text_size">
             </TextView>
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
                 android:layout_gravity="end"
-                android:layout_marginRight="18dp"
-                android:layout_marginTop="19dp"
+                android:layout_marginEnd="@dimen/icon_margin_end"
+                android:layout_marginTop="@dimen/icon_margin_top"
                 android:src="@drawable/right_arrow" />
         </FrameLayout>
     </LinearLayout>
