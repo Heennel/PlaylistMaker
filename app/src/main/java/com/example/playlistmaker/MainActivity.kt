@@ -11,8 +11,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        val mediaButton = findViewById<Button>(R.id.media)
+        setContentView(R.layout.activity_settings)
+        /*val mediaButton = findViewById<Button>(R.id.media)
         val settingsButton = findViewById<Button>(R.id.settings)
         val searchButton = findViewById<Button>(R.id.search)
         searchButton.setOnClickListener {
@@ -26,6 +26,6 @@ class MainActivity : AppCompatActivity() {
         mediaButton.setOnClickListener {
             val mediaIntent = Intent(this, MediaActivity::class.java)
             startActivity(mediaIntent)
-        }
+        }*/
     }
 }

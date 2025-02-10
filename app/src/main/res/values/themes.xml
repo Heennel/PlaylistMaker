@@ -3,7 +3,48 @@
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorSecondaryVariant">@color/blue_background_main</item>
+        <item name="colorSecondary">@color/white</item>
     </style>
-
-    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
+    <style name="MessageTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="MainButtonStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">@integer/button_weight</item>
+        <item name="android:layout_marginBottom">@dimen/button_margin_bottom</item>
+        <item name="android:gravity">center</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/button_icon_padding</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="iconTint">@color/icon_color</item>
+    </style>
+    <style name="MessageSettingsStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/text_margin_start</item>
+        <item name="android:layout_marginVertical">@dimen/text_margin_horizontal</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+    <style name="ImageSettings">
+        <item name="android:layout_width">@dimen/icon_size</item>
+        <item name="android:layout_height">@dimen/icon_size</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:layout_marginEnd">@dimen/icon_margin_end</item>
+        <item name="android:layout_marginTop">@dimen/icon_margin_top</item>
+    </style>
+    <style name="SettinsAnother">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
 </resources>
