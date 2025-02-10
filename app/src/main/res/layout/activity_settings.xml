@@ -70,7 +70,9 @@
                 android:text="@string/share"
                 >
             </TextView>
+
             <ImageView
+                android:id="@+id/shareButton"
                 style="@style/ImageSettings"
                 android:src="@drawable/share" />
         </FrameLayout>
@@ -85,7 +87,9 @@
                 style="@style/MessageSettingsStyle"
                 >
             </TextView>
+
             <ImageView
+                android:id="@+id/supportButton"
                 style="@style/ImageSettings"
                 android:src="@drawable/support" />
         </FrameLayout>
@@ -100,7 +104,9 @@
                 android:text="@string/user_agreement"
                 >
             </TextView>
+
             <ImageView
+                android:id="@+id/toAgreement"
                 style="@style/ImageSettings"
                 android:src="@drawable/right_arrow" />
         </FrameLayout>
