@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/main"
-    android:background="?attr/colorSecondaryVariant"
+    android:background="?attr/colorPrimary"
     android:fitsSystemWindows="true"
 
     >
