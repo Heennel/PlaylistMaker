@@ -52,11 +52,13 @@
                 >
             </TextView>
             <Switch
+                style="@style/SwitchStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:layout_marginRight="18dp"
                 android:layout_gravity="end"
+                android:id="@+id/switchDarkTheme"
                 />
         </FrameLayout>
         <FrameLayout

@@ -23,7 +23,6 @@
         android:layout_marginBottom="30dp"
         android:layout_marginTop="40dp"
         >
-
         <Button
             style="@style/MainButtonStyle"
             android:text="@string/search"

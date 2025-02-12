@@ -34,13 +34,15 @@
     </FrameLayout>
 
     <EditText
+        android:id="@+id/editTextSearch"
         style="@style/EditTextStyle"
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/edit_text_height"
         android:layout_marginHorizontal="@dimen/edit_text_margin_horizontal"
         android:hint="@string/search"
         android:inputType="text"
+        android:lines="1"
+        android:maxLength="15"
         android:textSize="@dimen/edit_text_text_size"
         android:drawableStart="@drawable/search_icon"
         android:drawableEnd="@drawable/reset_icon"

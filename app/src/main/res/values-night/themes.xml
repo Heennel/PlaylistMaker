@@ -53,9 +53,13 @@
         <item name="android:tint">@color/white</item>
     </style>
     <style name="EditTextStyle">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:drawableTint">@color/black</item>
         <item name="android:textColorHint">@color/black</item>
         <item name="android:background">@drawable/background_edit_text_dark</item>
+    </style>
+    <style name="SwitchStyle">
+        <item name="android:thumbTint">#9FBBF3</item>
+        <item name="android:trackTint">#3772E7</item>
     </style>
 </resources>
