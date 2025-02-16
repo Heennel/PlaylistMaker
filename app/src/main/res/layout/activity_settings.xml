@@ -1,56 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="?attr/colorSecondary"
-    android:fitsSystemWindows="true"
-    >
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <ImageView
-            style="@style/SettinsAnother"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_margin="18dp"
-            android:id="@+id/back"
-            android:src="@drawable/arrow" />
-
-        <TextView
-            style="@style/SettinsAnother"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="@string/settings"
-            android:textSize="22sp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="12dp"
-            />
-    </FrameLayout>
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:orientation="vertical"
-        android:layout_marginTop="24dp"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/SettinsAnother"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_margin="18dp"
+                android:id="@+id/back"
+                android:src="@drawable/arrow" />
+
+            <TextView
+                style="@style/SettinsAnother"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/settings"
+                android:textSize="22sp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="12dp"
+                />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
             <TextView
                 style="@style/MessageSettingsStyle"
-                android:text="@string/night_theme"
-                >
-            </TextView>
+                android:text="@string/night_theme" />
             <Switch
                 style="@style/SwitchStyle"
                 android:layout_width="wrap_content"
@@ -58,20 +57,16 @@
                 android:layout_marginTop="18dp"
                 android:layout_marginRight="18dp"
                 android:layout_gravity="end"
-                android:id="@+id/switchDarkTheme"
-                />
+                android:id="@+id/switchDarkTheme" />
         </FrameLayout>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
             <TextView
                 style="@style/MessageSettingsStyle"
-                android:text="@string/share"
-                >
-            </TextView>
+                android:text="@string/share" />
 
             <ImageView
                 android:id="@+id/shareButton"
@@ -82,13 +77,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
             <TextView
                 android:text="@string/help"
-                style="@style/MessageSettingsStyle"
-                >
-            </TextView>
+                style="@style/MessageSettingsStyle" />
 
             <ImageView
                 android:id="@+id/supportButton"
@@ -99,19 +91,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
             <TextView
                 style="@style/MessageSettingsStyle"
-                android:text="@string/user_agreement"
-                >
-            </TextView>
+                android:text="@string/user_agreement" />
 
             <ImageView
                 android:id="@+id/toAgreement"
                 style="@style/ImageSettings"
                 android:src="@drawable/right_arrow" />
         </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

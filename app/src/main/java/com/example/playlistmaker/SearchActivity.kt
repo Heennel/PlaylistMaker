@@ -14,6 +14,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
+    private lateinit var editText: EditText
+    private val textInEditText = "Поиск"
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
-        val editText = findViewById<EditText>(R.id.editTextSearch)
+        editText = findViewById<EditText>(R.id.editTextSearch)
         val resetIcon = editText.compoundDrawablesRelative[2]
 
         editText.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -37,9 +39,12 @@ class SearchActivity : AppCompatActivity() {
             null
         )
 
+        if (savedInstanceState != null) {
+            val savedText = savedInstanceState.getString(textInEditText)
+            editText.setText(savedText)
+        }
 
         editText.setOnTouchListener { v, event ->
-
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawables = editText.compoundDrawables
                 if (drawables.size > 2) {
@@ -84,5 +89,10 @@ class SearchActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(textInEditText, editText.text.toString())
     }
 }
