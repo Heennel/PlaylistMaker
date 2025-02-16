@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import android.content.Intent
 import android.media.Image
 import android.net.Uri
@@ -32,15 +33,15 @@ class SettingsActivity : AppCompatActivity() {
         }
         val toAgreement = findViewById<ImageView>(R.id.toAgreement)
         toAgreement.setOnClickListener{
-            val url = Uri.parse("https://yandex.ru/legal/practicum_offer/")
+            val url = Uri.parse(resources.getString(R.string.yandex))
             val launchBrowser = Intent(Intent.ACTION_VIEW, url)
             startActivity(launchBrowser)
         }
         val supportButton = findViewById<ImageView>(R.id.supportButton)
         supportButton.setOnClickListener{
 
-            val message = "Спасибо разработчикам и разработчицам за крутое приложение!"
-            val title = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+            val message = resources.getString(R.string.text_mail)
+            val title = resources.getString(R.string.theme_mail)
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.data = Uri.parse("mailto:")
             supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("paramo93@bk.ru"))

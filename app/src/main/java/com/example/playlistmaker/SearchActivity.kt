@@ -15,7 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var editText: EditText
-    private val textInEditText = "Поиск"
+    private var searchLiveText = ""
+    private val textToEditText = "Поиск"
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
-        editText = findViewById<EditText>(R.id.editTextSearch)
+        editText = findViewById(R.id.editTextSearch)
         val resetIcon = editText.compoundDrawablesRelative[2]
 
         editText.setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -39,24 +40,26 @@ class SearchActivity : AppCompatActivity() {
             null
         )
 
-        if (savedInstanceState != null) {
-            val savedText = savedInstanceState.getString(textInEditText)
-            editText.setText(savedText)
-        }
-
+        //Как то с горем пополам с чужой помощью реализовал кнопку очищения, только потом понял что можно было наложить картинку на поле ввода =(
         editText.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawables = editText.compoundDrawables
-                if (drawables.size > 2) {
+                if (drawables.size > 2) { //без этой проверки при нажатии на поле ввода активити вылетает
                     val resetIconDrawable = drawables[2]
                     if (resetIconDrawable != null) {
                         val resetIconWidth = resetIconDrawable.intrinsicWidth
                         if (event.rawX >= (editText.right - resetIconWidth)) {
+
+                            //очистка поля ввода
                             editText.text.clear()
+
+                            //скрыть клавиатуру
                             this.currentFocus?.let { view ->
                                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
                             }
+
+                            //убрать курсор с текста
                             editText.clearFocus()
                             return@setOnTouchListener true
                         }
@@ -86,6 +89,7 @@ class SearchActivity : AppCompatActivity() {
                         null
                     )
                 }
+                searchLiveText = s.toString()
             }
             override fun afterTextChanged(s: Editable?) {}
         })
@@ -93,6 +97,12 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(textInEditText, editText.text.toString())
+        outState.putString(textToEditText, searchLiveText)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        searchLiveText = savedInstanceState.getString(textToEditText, "")
+        editText.setText(searchLiveText)
     }
 }
