@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/lupa"
+        android:width="@dimen/icon_size"
+        android:height="@dimen/icon_size"
+        android:gravity="center_vertical|start"
+        android:left="@dimen/icon_search_horizontal_padding"
+        android:top="@dimen/icon_search_vertical_padding"
+        android:bottom="@dimen/icon_search_vertical_padding"
+        android:id="@+id/resetButton"
+        />
+</layer-list>
