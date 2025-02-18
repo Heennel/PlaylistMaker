@@ -28,8 +28,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val back = findViewById<ImageView>(R.id.back)
         back.setOnClickListener{
-            val mainIntent = Intent(this, MainActivity::class.java)
-            startActivity(mainIntent)
+            finish()
         }
         val toAgreement = findViewById<ImageView>(R.id.toAgreement)
         toAgreement.setOnClickListener{
@@ -54,12 +53,14 @@ class SettingsActivity : AppCompatActivity() {
         shareButton.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
-            val shareText = "Стань Android-разработчиком: https://praktikum.yandex.ru/android-developer/"
+            val shareText = resources.getString(R.string.share_text)
 
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Development Course")
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.share_subject))
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
 
             startActivity(shareIntent)
         }
+
+
     }
 }

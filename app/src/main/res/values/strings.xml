@@ -11,4 +11,6 @@
     <string name="yandex">https://yandex.ru/legal/practicum_offer/</string>
     <string name="text_mail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="theme_mail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="share_text">Стань Android-разработчиком: https://praktikum.yandex.ru/android-developer/</string>
+    <string name="share_subject">Android Development Course</string>
 </resources>

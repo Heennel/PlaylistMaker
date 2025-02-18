@@ -15,35 +15,29 @@
         android:layout_gravity="start"
         android:layout_marginTop="14dp"
         android:layout_marginStart="16dp" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="30dp"
+
+    <Button
+        style="@style/MainButtonStyle"
         android:layout_marginTop="40dp"
-        >
-        <Button
-            style="@style/MainButtonStyle"
-            android:text="@string/search"
-            app:icon="@drawable/lupa"
-            app:iconSize="@dimen/button_icon_size"
-            android:id="@+id/search"
-            />
-        <Button
-            style="@style/MainButtonStyle"
-            android:text="@string/media"
-            app:icon="@drawable/music"
-            app:iconSize="@dimen/button_icon_size"
-            android:id="@+id/media"
-            />
-        <Button
-            style="@style/MainButtonStyle"
-            android:text="@string/settings"
-            app:icon="@drawable/settings"
-            app:iconSize="@dimen/button_icon_size"
-            android:id="@+id/settings"
-            />
-    </LinearLayout>
+        android:text="@string/search"
+        app:icon="@drawable/lupa"
+        app:iconSize="@dimen/button_icon_size"
+        android:id="@+id/search"
+        />
+    <Button
+        style="@style/MainButtonStyle"
+        android:text="@string/media"
+        app:icon="@drawable/music"
+        app:iconSize="@dimen/button_icon_size"
+        android:id="@+id/media"
+        />
+    <Button
+        android:layout_marginBottom="30dp"
+        style="@style/MainButtonStyle"
+        android:text="@string/settings"
+        app:icon="@drawable/settings"
+        app:iconSize="@dimen/button_icon_size"
+        android:id="@+id/settings"
+        />
 
 </LinearLayout>
