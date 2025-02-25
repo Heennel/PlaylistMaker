@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-//import com.bumptech.glide.Glide
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 
 class TrackAdapter(
@@ -19,7 +19,7 @@ class TrackAdapter(
         val trackDescription = item.findViewById<TextView>(R.id.trackArtist)
 
         fun bind(track: Track){
-            //Glide.with(context).load(track.trackImg).into(trackImg)
+            Glide.with(context).load(track.trackImg).into(trackImg)
             trackName.setText(track.trackName)
             trackDescription.setText("${track.artist}  · ${track.time}")
         }
