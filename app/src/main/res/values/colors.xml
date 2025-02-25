@@ -7,6 +7,7 @@
     <color name="icon_color">#1A1B22</color>
     <color name="grayEditText">#E6E8EB</color>
     <color name="grayTextOnEditText">#AEAFB4</color>
+    <color name="grayText">#AEAFB4</color>
     <color name="cursor">#3772E7</color>
     <color name="switchCircleDark">#9FBBF3</color>
     <color name="switchBackgroundDark">#3772E7</color>
