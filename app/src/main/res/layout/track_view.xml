@@ -11,8 +11,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageTrack"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/track_icon_size"
+        android:layout_height="@dimen/track_icon_size"
         android:src="@color/black"
         app:shapeAppearanceOverlay="@style/RoundedImageView"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,8 +20,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        style="@style/TrackNameStyle"
         android:id="@+id/trackName"
+        style="@style/TrackNameStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -37,12 +37,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="1dp"
-        android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/imageTrack"
         app:layout_constraintTop_toBottomOf="@+id/trackName" />
 
     <ImageView
-        style="@style/TrackRightArrow"
+        style="@style/TrackRecImages"
         android:id="@+id/backArrow"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -53,5 +52,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/right_arrow"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        style="@style/TrackRecImages"
+        android:id="@+id/between_artist_time"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@+id/trackArtist"
+        app:layout_constraintTop_toBottomOf="@+id/trackName"
+        app:srcCompat="@drawable/between_artist_time" />
+
+    <TextView
+        style="@style/TrackDescriptionStyle"
+        android:id="@+id/track_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toEndOf="@+id/between_artist_time"
+        app:layout_constraintTop_toBottomOf="@+id/trackName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

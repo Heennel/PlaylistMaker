@@ -17,11 +17,15 @@ class TrackAdapter(
         val trackImg = item.findViewById<ShapeableImageView>(R.id.imageTrack)
         val trackName = item.findViewById<TextView>(R.id.trackName)
         val trackDescription = item.findViewById<TextView>(R.id.trackArtist)
-
+        val trackTime = item.findViewById<TextView>(R.id.track_time)
         fun bind(track: Track){
-            Glide.with(context).load(track.trackImg).into(trackImg)
+            Glide.with(context)
+                .load(track.trackImg)
+                .placeholder(R.drawable.placeholder_image)
+                .into(trackImg)
             trackName.setText(track.trackName)
-            trackDescription.setText("${track.artist}  · ${track.time}")
+            trackDescription.setText(track.artist)
+            trackTime.setText(track.time)
         }
     }
 
