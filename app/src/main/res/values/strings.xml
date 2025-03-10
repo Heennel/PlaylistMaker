@@ -13,4 +13,8 @@
     <string name="theme_mail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="share_text">Стань Android-разработчиком: https://praktikum.yandex.ru/android-developer/</string>
     <string name="share_subject">Android Development Course</string>
+    <string name="not_found">Ничего не нашлось</string>
+    <string name="problems">Проблемы со связью</string>
+    <string name="connection_failed">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="reload">Обновить</string>
 </resources>

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/colorSecondary"
     android:fitsSystemWindows="true"
     >
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,6 +41,8 @@
         >
 
         <EditText
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:id="@+id/editTextSearch"
             style="@style/EditTextStyle"
             android:layout_width="match_parent"
@@ -47,7 +51,7 @@
             android:hint="@string/search"
             android:inputType="text"
             android:lines="1"
-            android:maxLength="15"
+            android:maxLength="45"
             android:textSize="@dimen/edit_text_text_size"
             android:drawableStart="@drawable/search_icon"
             android:drawablePadding="@dimen/edit_text_drawable_padding"
@@ -66,5 +70,86 @@
             />
 
     </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trackRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="16dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <ImageView
+            android:id="@+id/notFoundImage"
+            android:visibility="gone"
+            style="@style/NotFoundImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_image_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/trackRV" />
+
+        <TextView
+            android:id="@+id/notFoundText"
+            style="@style/TextSearchActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/not_found"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notFoundImage" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/connectionFailedImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_image_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/trackRV"
+            style="@style/ConnectionFailedImage" />
+
+        <TextView
+            android:id="@+id/problemsText"
+            style="@style/TextSearchActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/problems"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/connectionFailedImage" />
+
+        <TextView
+            android:id="@+id/connectionFailedText"
+            style="@style/TextSearchActivity"
+            android:layout_width="312dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/connection_failed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/problemsText" />
+
+        <Button
+            android:id="@+id/reloadButton"
+            style="@style/ButtonSearchActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/connectionFailedText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

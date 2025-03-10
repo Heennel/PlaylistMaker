@@ -7,8 +7,6 @@
     android:background="?attr/colorSecondary"
     android:fitsSystemWindows="true">
 
-    <!-- этот экран оптимизирую в след спринте -->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
