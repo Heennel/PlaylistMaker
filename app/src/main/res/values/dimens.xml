@@ -26,8 +26,10 @@
     <dimen name="edit_text_padding_end">12dp</dimen>
     <dimen name="edit_text_drawable_padding">8dp</dimen>
     <dimen name="arrow_image_size">16dp</dimen>
+    <dimen name="arrow_image_size_track">24dp</dimen>
     <dimen name="icon_search_vertical_padding">10dp</dimen>
     <dimen name="icon_search_horizontal_padding">12dp</dimen>
     <dimen name="text_size_search">19sp</dimen>
     <dimen name="margin_top_image_search">102dp</dimen>
+    <dimen name="point_image_size">3dp</dimen>
 </resources>
