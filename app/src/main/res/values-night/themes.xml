@@ -79,4 +79,26 @@
     <style name="TrackRecImages">
         <item name="android:tint">@color/white</item>
     </style>
+    <style name="NotFoundImage">
+        <item name="android:src">@drawable/not_found_image_dark</item>
+    </style>
+    <style name="ConnectionFailedImage">
+        <item name="android:src">@drawable/connection_failed_dark</item>
+    </style>
+    <style name="TextSearchActivity">
+        <item name="android:textSize">@dimen/text_size_search</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="ButtonSearchActivity">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">@string/reload</item>
+        <item name="cornerRadius">53dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>

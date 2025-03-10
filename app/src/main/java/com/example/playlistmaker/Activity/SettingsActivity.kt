@@ -1,8 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.Activity
 
-import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
@@ -10,6 +8,7 @@ import android.widget.Switch
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
