@@ -28,4 +28,6 @@
     <dimen name="arrow_image_size">16dp</dimen>
     <dimen name="icon_search_vertical_padding">10dp</dimen>
     <dimen name="icon_search_horizontal_padding">12dp</dimen>
+    <dimen name="text_size_search">19sp</dimen>
+    <dimen name="margin_top_image_search">102dp</dimen>
 </resources>
