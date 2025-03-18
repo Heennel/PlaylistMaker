@@ -19,7 +19,10 @@ import com.example.playlistmaker.API.TrackResponse
 import com.example.playlistmaker.API.iTunesApi
 import com.example.playlistmaker.R
 import com.example.playlistmaker.API.Track
+import com.example.playlistmaker.RecyclerView.ClickListener
+import com.example.playlistmaker.RecyclerView.HistoryAdapter
 import com.example.playlistmaker.RecyclerView.TrackAdapter
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,7 +30,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
-class SearchActivity : AppCompatActivity() {
+const val TEXT_KEY = "TEXT_KEY"
+const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
+
+class SearchActivity : AppCompatActivity(), ClickListener {
+
     private lateinit var editText: EditText
     private lateinit var arrowBack: ImageView
     private lateinit var clearButton: ImageView
@@ -41,12 +48,16 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var reloadButton: Button
     private lateinit var problemsText: TextView
 
-    private var searchLiveText = ""
+    private lateinit var historyRV: RecyclerView
+    private lateinit var clearHistoryButton: Button
+    private lateinit var historyText: TextView
+
     private val base_url="https://itunes.apple.com"
-    private val TEXT_KEY = "TEXT_KEY"
+
     private var trackLastName = ""
 
-    private var adapter = TrackAdapter()
+    private var adapter = TrackAdapter(this)
+    private var historyAdapter = HistoryAdapter(this)
 
     private var trackList = ArrayList<Track>()
 
@@ -64,11 +75,14 @@ class SearchActivity : AppCompatActivity() {
 
         notFoundImage = findViewById(R.id.notFoundImage)
         notFoundText = findViewById(R.id.notFoundText)
-
         connectionFailedImage = findViewById(R.id.connectionFailedImage)
         connectoinFailedText = findViewById(R.id.connectionFailedText)
         reloadButton = findViewById(R.id.reloadButton)
         problemsText = findViewById(R.id.problemsText)
+
+        historyRV = findViewById(R.id.historyRV)
+        clearHistoryButton = findViewById(R.id.clearStoryButton)
+        historyText = findViewById(R.id.historyText)
 
         arrowBack = findViewById(R.id.back)
         arrowBack.setOnClickListener {
@@ -79,8 +93,18 @@ class SearchActivity : AppCompatActivity() {
         clearButton = findViewById(R.id.resetButton)
         clearButton.visibility= View.INVISIBLE
 
+        val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
+        editText.setText(sharedPreferences.getString(TEXT_KEY,""))
+        val list = sharedPreferences.getString(HISTORY_LIST_KEY,"")
+        if(!list.isNullOrEmpty()) {
+            historyAdapter.historyTrackList = createArrayFromJson(list).toCollection(ArrayList())
+        }
+
+        if(editText.text.isNotEmpty()){
+            clearButton.visibility = View.VISIBLE
+        }
+
         clearButton.setOnClickListener {
-            recyclerTrack.visibility = View.INVISIBLE
             hideAll()
             editText.text.clear()
             this.currentFocus?.let { view ->
@@ -92,7 +116,6 @@ class SearchActivity : AppCompatActivity() {
         adapter.trackList = trackList
 
         recyclerTrack = findViewById(R.id.trackRV)
-        recyclerTrack.visibility = View.INVISIBLE
         recyclerTrack.layoutManager = LinearLayoutManager(this)
         recyclerTrack.adapter = adapter
 
@@ -103,21 +126,25 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
                     clearButton.visibility= View.INVISIBLE
+                    hideAll()
                 } else {
                     clearButton.visibility= View.VISIBLE
                 }
-                searchLiveText = s.toString()
+                if(editText.hasFocus() && s.isNullOrEmpty()){
+                    showHistory()
+                }else{
+                    hideHistory()
+                }
             }
             override fun afterTextChanged(s: Editable?) {}
         })
-
-
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (editText.text.isNotEmpty()) {
@@ -126,17 +153,25 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+        editText.setOnFocusChangeListener { view, hasFocus ->
+            if(hasFocus && editText.text.isEmpty()){
+                showHistory()
+            }else{
+                hideHistory()
+            }
+        }
 
-    }
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(TEXT_KEY, searchLiveText)
-    }
+        historyRV.adapter = historyAdapter
+        historyRV.layoutManager = LinearLayoutManager(this)
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchLiveText = savedInstanceState.getString(TEXT_KEY, "")
-        editText.setText(searchLiveText)
+        clearHistoryButton.setOnClickListener {
+            historyAdapter.historyTrackList.clear()
+            hideHistory()
+            historyAdapter.notifyDataSetChanged()
+            sharedPreferences.edit()
+                .remove(HISTORY_LIST_KEY)
+                .apply()
+        }
     }
 
     private fun notFoundMessage() {
@@ -154,6 +189,13 @@ class SearchActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
     private fun hideAll(){
+        hidePlaceHolders()
+        hideFoundRV()
+    }
+    private fun hideFoundRV(){
+        recyclerTrack.visibility = View.GONE
+    }
+    private fun hidePlaceHolders(){
         connectionFailedImage.visibility = View.GONE
         connectoinFailedText.visibility = View.GONE
         reloadButton.visibility = View.GONE
@@ -184,5 +226,59 @@ class SearchActivity : AppCompatActivity() {
                 connectionFailedMessage()
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
+        sharedPreferences.edit()
+            .putString(TEXT_KEY,editText.text.toString())
+            .apply()
+    }
+
+    override fun onClick(track: Track) {
+        val tracks = historyAdapter.historyTrackList
+        val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
+        if(tracks.size<10) {
+            if (!tracks.contains(track)) {
+                tracks.add(0, track)
+            } else {
+                tracks.remove(track)
+                tracks.add(0, track)
+            }
+        }else{
+            if(!tracks.contains(track)) {
+                val lastSearchedTrack = tracks[9]
+                tracks.remove(lastSearchedTrack)
+                tracks.add(track)
+            }else{
+                tracks.remove(track)
+                tracks.add(0, track)
+            }
+        }
+        historyAdapter.notifyDataSetChanged()
+        sharedPreferences.edit()
+            .putString(HISTORY_LIST_KEY,createJsonFromArray(historyAdapter.historyTrackList.toArray()))
+            .apply()
+    }
+
+    fun showHistory(){
+        if(historyAdapter.historyTrackList.isNotEmpty()) {
+            historyRV.visibility = View.VISIBLE
+            clearHistoryButton.visibility = View.VISIBLE
+            historyText.visibility = View.VISIBLE
+        }
+    }
+
+    fun hideHistory(){
+        historyRV.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyText.visibility = View.GONE
+    }
+    fun createArrayFromJson(json: String):Array<Track>{
+        return Gson().fromJson(json, Array<Track>::class.java)
+    }
+    fun createJsonFromArray(array: Array<Any>):String{
+        return Gson().toJson(array)
     }
 }

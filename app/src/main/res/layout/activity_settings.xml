@@ -10,8 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+        android:layout_marginBottom="24dp">
         <ImageView
             style="@style/SettinsAnother"
             android:layout_width="16dp"
@@ -33,69 +32,35 @@
             />
     </FrameLayout>
 
-    <LinearLayout
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchDarkTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="24dp">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/MessageSettingsStyle"
-                android:text="@string/night_theme" />
-            <Switch
-                style="@style/SwitchStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginRight="18dp"
-                android:layout_gravity="end"
-                android:id="@+id/switchDarkTheme" />
-        </FrameLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/MessageSettingsStyle"
-                android:text="@string/share" />
-
-            <ImageView
-                android:id="@+id/shareButton"
-                style="@style/ImageSettings"
-                android:src="@drawable/share" />
-        </FrameLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <TextView
-                android:text="@string/help"
-                style="@style/MessageSettingsStyle" />
-
-            <ImageView
-                android:id="@+id/supportButton"
-                style="@style/ImageSettings"
-                android:src="@drawable/support" />
-        </FrameLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/MessageSettingsStyle"
-                android:text="@string/user_agreement" />
-
-            <ImageView
-                android:id="@+id/toAgreement"
-                style="@style/ImageSettings"
-                android:src="@drawable/right_arrow" />
-        </FrameLayout>
-    </LinearLayout>
+        android:gravity="center_vertical"
+        android:text="@string/night_theme"
+        style="@style/SettingElement"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/share"
+        style="@style/SettingElement"
+        android:layout_width="match_parent"
+        android:includeFontPadding="false"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/share"
+        android:text="@string/share" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/support"
+        style="@style/SettingElement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/support"
+        android:paddingVertical="20dp"
+        android:text="@string/help" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/userAgreement"
+        style="@style/SettingElement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/right_arrow"
+        android:text="@string/user_agreement" />
 </LinearLayout>

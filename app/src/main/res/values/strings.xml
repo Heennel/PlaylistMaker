@@ -17,4 +17,7 @@
     <string name="problems">Проблемы со связью</string>
     <string name="connection_failed">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="reload">Обновить</string>
+    <string name="mail">paramo93@bk.ru</string>
+    <string name="youSearched">Вы искали</string>
+    <string name="clearStory">Очистить историю</string>
 </resources>
