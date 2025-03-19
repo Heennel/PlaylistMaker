@@ -30,4 +30,7 @@
     <dimen name="icon_search_horizontal_padding">12dp</dimen>
     <dimen name="text_size_search">19sp</dimen>
     <dimen name="margin_top_image_search">102dp</dimen>
+    <dimen name="history_text_size">19sp</dimen>
+    <dimen name="history_button_radius">54dp</dimen>
+    <dimen name="history_button_text_size">14sp</dimen>
 </resources>

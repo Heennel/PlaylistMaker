@@ -32,6 +32,7 @@ import retrofit2.create
 
 const val TEXT_KEY = "TEXT_KEY"
 const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
+const val FOUND_LIST_KEY = "FOUND_LIST_KEY"
 
 class SearchActivity : AppCompatActivity(), ClickListener {
 
@@ -95,9 +96,10 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
         val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
         editText.setText(sharedPreferences.getString(TEXT_KEY,""))
-        val list = sharedPreferences.getString(HISTORY_LIST_KEY,"")
-        if(!list.isNullOrEmpty()) {
-            historyAdapter.historyTrackList = createArrayFromJson(list).toCollection(ArrayList())
+        val historyList = sharedPreferences.getString(HISTORY_LIST_KEY,"")
+
+        if(!historyList.isNullOrEmpty()) {
+            historyAdapter.historyTrackList = createArrayFromJson(historyList).toCollection(ArrayList())
         }
 
         if(editText.text.isNotEmpty()){
