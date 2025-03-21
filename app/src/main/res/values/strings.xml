@@ -20,4 +20,5 @@
     <string name="mail">paramo93@bk.ru</string>
     <string name="youSearched">Вы искали</string>
     <string name="clearStory">Очистить историю</string>
+    <string name="url_iTunes">https://itunes.apple.com</string>
 </resources>

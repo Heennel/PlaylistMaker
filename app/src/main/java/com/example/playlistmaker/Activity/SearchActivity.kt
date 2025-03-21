@@ -21,6 +21,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.API.Track
 import com.example.playlistmaker.RecyclerView.ClickListener
 import com.example.playlistmaker.RecyclerView.HistoryAdapter
+import com.example.playlistmaker.RecyclerView.ListTrackUpdater
 import com.example.playlistmaker.RecyclerView.TrackAdapter
 import com.google.gson.Gson
 import retrofit2.Call
@@ -30,9 +31,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
-const val TEXT_KEY = "TEXT_KEY"
-const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
-const val FOUND_LIST_KEY = "FOUND_LIST_KEY"
+private const val TEXT_KEY = "TEXT_KEY"
+private const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
+private const val base_url = "https://itunes.apple.com"
 
 class SearchActivity : AppCompatActivity(), ClickListener {
 
@@ -52,8 +53,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private lateinit var historyRV: RecyclerView
     private lateinit var clearHistoryButton: Button
     private lateinit var historyText: TextView
-
-    private val base_url="https://itunes.apple.com"
 
     private var trackLastName = ""
 
@@ -95,11 +94,14 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         clearButton.visibility= View.INVISIBLE
 
         val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
+
         editText.setText(sharedPreferences.getString(TEXT_KEY,""))
         val historyList = sharedPreferences.getString(HISTORY_LIST_KEY,"")
 
         if(!historyList.isNullOrEmpty()) {
             historyAdapter.historyTrackList = createArrayFromJson(historyList).toCollection(ArrayList())
+            historyAdapter.notifyDataSetChanged()
+            showHistory()
         }
 
         if(editText.text.isNotEmpty()){
@@ -136,13 +138,11 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 if (s.isNullOrEmpty()) {
                     clearButton.visibility= View.INVISIBLE
                     hideAll()
+                    if(historyAdapter.historyTrackList.isNotEmpty()){
+                        showHistory()
+                    }
                 } else {
                     clearButton.visibility= View.VISIBLE
-                }
-                if(editText.hasFocus() && s.isNullOrEmpty()){
-                    showHistory()
-                }else{
-                    hideHistory()
                 }
             }
             override fun afterTextChanged(s: Editable?) {}
@@ -154,13 +154,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 }
             }
             false
-        }
-        editText.setOnFocusChangeListener { view, hasFocus ->
-            if(hasFocus && editText.text.isEmpty()){
-                showHistory()
-            }else{
-                hideHistory()
-            }
         }
 
         historyRV.adapter = historyAdapter
@@ -175,6 +168,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 .apply()
         }
     }
+
+
 
     private fun notFoundMessage() {
         notFoundText.visibility = View.VISIBLE
@@ -205,16 +200,34 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         notFoundText.visibility = View.GONE
         notFoundImage.visibility = View.GONE
     }
+    fun showHistory(){
+        if(historyAdapter.historyTrackList.isNotEmpty()) {
+            historyRV.visibility = View.VISIBLE
+            clearHistoryButton.visibility = View.VISIBLE
+            historyText.visibility = View.VISIBLE
+        }
+    }
+    fun hideHistory(){
+        historyRV.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyText.visibility = View.GONE
+    }
+
+
+
+
 
     private fun getTrack(trackName: String){
         trackLastName = trackName
         iTunesApiService.getTrack(trackName).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.code() == 200) {
+                hideHistory()
+                if (response.isSuccessful) {
                     trackList.clear()
-                    if (response.body()?.results?.isNotEmpty() == true) {
+                    val responseList = response.body()?.results
+                    if (!responseList.isNullOrEmpty()) {
                         recyclerTrack.visibility = View.VISIBLE
-                        trackList.addAll(response.body()?.results!!)
+                        trackList.addAll(responseList)
                         adapter.notifyDataSetChanged()
                     }
                     if (trackList.isEmpty()) {
@@ -239,44 +252,16 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
 
     override fun onClick(track: Track) {
-        val tracks = historyAdapter.historyTrackList
+        val listUpdater = ListTrackUpdater(historyAdapter.historyTrackList)
         val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
-        if(tracks.size<10) {
-            if (!tracks.contains(track)) {
-                tracks.add(0, track)
-            } else {
-                tracks.remove(track)
-                tracks.add(0, track)
-            }
-        }else{
-            if(!tracks.contains(track)) {
-                val lastSearchedTrack = tracks[9]
-                tracks.remove(lastSearchedTrack)
-                tracks.add(track)
-            }else{
-                tracks.remove(track)
-                tracks.add(0, track)
-            }
-        }
+        listUpdater.update(track)
         historyAdapter.notifyDataSetChanged()
         sharedPreferences.edit()
             .putString(HISTORY_LIST_KEY,createJsonFromArray(historyAdapter.historyTrackList.toArray()))
             .apply()
     }
 
-    fun showHistory(){
-        if(historyAdapter.historyTrackList.isNotEmpty()) {
-            historyRV.visibility = View.VISIBLE
-            clearHistoryButton.visibility = View.VISIBLE
-            historyText.visibility = View.VISIBLE
-        }
-    }
 
-    fun hideHistory(){
-        historyRV.visibility = View.GONE
-        clearHistoryButton.visibility = View.GONE
-        historyText.visibility = View.GONE
-    }
     fun createArrayFromJson(json: String):Array<Track>{
         return Gson().fromJson(json, Array<Track>::class.java)
     }
