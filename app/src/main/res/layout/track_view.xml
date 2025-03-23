@@ -49,24 +49,12 @@
         app:layout_constraintEnd_toStartOf="@+id/between_artist_time"
         />
 
-    <ImageView
-        style="@style/TrackRecImages"
-        android:id="@+id/backArrow"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/right_arrow"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         style="@style/TrackRecImages"
         android:id="@+id/between_artist_time"
-        android:layout_width="3dp"
-        android:layout_height="3dp"
+        android:layout_width="@dimen/point_image_size"
+        android:layout_height="@dimen/point_image_size"
         android:layout_marginStart="5dp"
         android:layout_marginTop="6dp"
         app:layout_constraintStart_toEndOf="@+id/trackArtist"
@@ -82,5 +70,18 @@
         android:layout_marginTop="1dp"
         app:layout_constraintStart_toEndOf="@+id/between_artist_time"
         app:layout_constraintTop_toBottomOf="@+id/trackName" />
+
+    <ImageView
+        style="@style/TrackRecImages"
+        android:id="@+id/backArrow"
+        android:layout_width="@dimen/arrow_image_size_track"
+        android:layout_height="@dimen/arrow_image_size_track"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/right_arrow"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
