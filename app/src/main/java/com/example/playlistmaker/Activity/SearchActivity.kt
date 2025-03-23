@@ -94,7 +94,6 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         clearButton.visibility= View.INVISIBLE
 
         val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
-
         editText.setText(sharedPreferences.getString(TEXT_KEY,""))
         val historyList = sharedPreferences.getString(HISTORY_LIST_KEY,"")
 

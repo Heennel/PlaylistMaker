@@ -33,4 +33,5 @@
     <dimen name="history_text_size">19sp</dimen>
     <dimen name="history_button_radius">54dp</dimen>
     <dimen name="history_button_text_size">14sp</dimen>
+    <dimen name="max_heigth_history">590dp</dimen>
 </resources>
