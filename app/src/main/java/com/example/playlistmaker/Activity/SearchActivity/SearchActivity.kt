@@ -1,6 +1,8 @@
 package com.example.playlistmaker.Activity.SearchActivity
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,6 +22,7 @@ import com.example.playlistmaker.API.TrackResponse
 import com.example.playlistmaker.API.iTunesApi
 import com.example.playlistmaker.R
 import com.example.playlistmaker.API.Track
+import com.example.playlistmaker.Activity.Audioplayer
 import com.example.playlistmaker.Activity.PLAYLIST_MAKER
 import com.example.playlistmaker.RecyclerView.ClickListener
 import com.example.playlistmaker.RecyclerView.HistoryAdapter
@@ -32,6 +35,8 @@ import retrofit2.Response
 import retrofit2.create
 
 private const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
+private const val TEXT_KEY = "TEXT_KEY"
+private const val STATUS_KEY = "STATUS_KEY"
 class SearchActivity : AppCompatActivity(), ClickListener {
 
     private lateinit var editTextTracks: EditText
@@ -53,6 +58,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private lateinit var historyText: TextView
 
     private var activityStatus = SearchStatus.NOTHING
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     private var foundAdapter = TrackAdapter(this)
     private var historyAdapter = HistoryAdapter(this)
@@ -86,13 +93,15 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         foundRV.layoutManager = LinearLayoutManager(this)
         foundAdapter.trackList = trackList
 
-        val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
         val historyList = sharedPreferences.getString(HISTORY_LIST_KEY,"")
         if(!historyList.isNullOrEmpty()) {
             historyAdapter.historyTrackList = createArrayFromJson(historyList).toCollection(ArrayList())
             historyAdapter.notifyDataSetChanged()
-            setActivityStatus(SearchStatus.HISTORY_TRACK_LIST)
         }
+
+        setActivityStatus(SearchStatus.valueOf(sharedPreferences.getString(STATUS_KEY,"NOTHING")!!))
+        editTextTracks.setText(sharedPreferences.getString(TEXT_KEY,""))
 
         arrowBack.setOnClickListener {
             finish()
@@ -136,8 +145,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
 
         clearHistoryButton.setOnClickListener {
             historyAdapter.historyTrackList.clear()
-            hideHistory()
             historyAdapter.notifyDataSetChanged()
+            setActivityStatus(SearchStatus.NOTHING)
             sharedPreferences.edit()
                 .remove(HISTORY_LIST_KEY)
                 .apply()
@@ -146,11 +155,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             getTrack()
         }
     }
-    fun hideHistory(){
-        historyRV.visibility = View.GONE
-        clearHistoryButton.visibility = View.GONE
-        historyText.visibility = View.GONE
-    }
+
 
     private fun getTrack(){
         val trackName = editTextTracks.text.toString()
@@ -176,9 +181,19 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             }
         })
     }
+
+    override fun onPause() {
+        super.onPause()
+        sharedPreferences.edit()
+            .putString(TEXT_KEY,editTextTracks.text.toString())
+            .apply()
+        sharedPreferences.edit()
+            .putString(STATUS_KEY, activityStatus.name)
+            .apply()
+    }
     override fun onClick(track: Track) {
+        toTrack(track)
         val listUpdater = ListTrackUpdater(historyAdapter.historyTrackList)
-        val sharedPreferences = getSharedPreferences(PLAYLIST_MAKER, MODE_PRIVATE)
         listUpdater.update(track)
         historyAdapter.notifyDataSetChanged()
         sharedPreferences.edit()
@@ -194,6 +209,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     fun setActivityStatus(status: SearchStatus){
         when(status){
             SearchStatus.NOTHING -> {
+                activityStatus = SearchStatus.NOTHING
+
                 foundRV.visibility = View.GONE
 
                 notFoundImage.visibility = View.GONE
@@ -209,6 +226,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 clearHistoryButton.visibility = View.GONE
             }
             SearchStatus.FOUND_TRACK_LIST -> {
+                activityStatus = SearchStatus.FOUND_TRACK_LIST
+
                 foundRV.visibility = View.VISIBLE
 
                 notFoundImage.visibility = View.GONE
@@ -225,6 +244,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             }
 
             SearchStatus.FAILED_NO_INTERNET -> {
+                activityStatus = SearchStatus.FAILED_NO_INTERNET
                 foundRV.visibility = View.GONE
 
                 notFoundImage.visibility = View.GONE
@@ -240,6 +260,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 clearHistoryButton.visibility = View.GONE
             }
             SearchStatus.FAILED_NO_FOUND -> {
+                activityStatus = SearchStatus.FAILED_NO_FOUND
                 foundRV.visibility = View.GONE
 
                 notFoundImage.visibility = View.VISIBLE
@@ -256,6 +277,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             }
 
             SearchStatus.HISTORY_TRACK_LIST -> {
+                activityStatus = SearchStatus.HISTORY_TRACK_LIST
                 foundRV.visibility = View.GONE
 
                 notFoundImage.visibility = View.GONE
@@ -271,5 +293,18 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                 clearHistoryButton.visibility = View.VISIBLE
             }
         }
+    }
+    fun toTrack(track: Track){
+        val intent = Intent(this, Audioplayer::class.java).apply {
+            putExtra("TRACK_IMAGE", track.trackImage)
+            putExtra("TRACK_NAME", track.trackName)
+            putExtra("ARTIST_NAME", track.artistName)
+            putExtra("YEAR_NUMBER", track.yearNumber)
+            putExtra("TRACK_DURATION", track.trackTime)
+            putExtra("TRACK_GENRE", track.genre)
+            putExtra("TRACK_COUNTRY",track.country)
+            putExtra("ALBUM_NAME",track.albumName)
+        }
+        startActivity(intent)
     }
 }
