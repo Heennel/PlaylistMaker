@@ -9,7 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import com.example.playlistmaker.API.Track
 import com.example.playlistmaker.R
 import java.util.Locale
 
@@ -34,16 +38,17 @@ class Audioplayer : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-        val trackName = intent.getStringExtra("TRACK_NAME")?:""
-        val artistName = intent.getStringExtra("ARTIST_NAME")?:""
-        val yearNumber = (intent.getStringExtra("YEAR_NUMBER")?:"").substring(0,4)
-        val trackImage = (intent.getStringExtra("TRACK_IMAGE")?:"").replaceAfterLast('/',"1024x1024bb.jpg")
-        val durationTrackBad = intent.getStringExtra("TRACK_DURATION")?:""
-        val durationTrackGood = SimpleDateFormat("mm:ss", Locale.getDefault()).format(durationTrackBad.toLong())
-        val genre = intent.getStringExtra("TRACK_GENRE")?:""
-        val country = intent.getStringExtra("TRACK_COUNTRY")?:""
-        val albumName = intent.getStringExtra("ALBUM_NAME")?:""
+        val track = IntentCompat.getParcelableExtra(intent,"TRACK",Track::class.java)?:return
 
+        val trackName = track.trackName
+        val artistName = track.artistName
+        val yearNumber = track.yearNumber.substring(0,4)
+        val trackImage = track.trackImage.replaceAfterLast('/',"1024x1024bb.jpg")
+        val durationTrackBad = track.trackTime
+        val durationTrackGood = SimpleDateFormat("mm:ss", Locale.getDefault()).format(durationTrackBad.toLong())
+        val genre = track.genre
+        val country = track.country
+        val albumName = track.albumName
 
         trackNameTextView.setText(trackName)
         artistNameTextView.setText(artistName)
@@ -64,6 +69,7 @@ class Audioplayer : AppCompatActivity() {
 
         Glide.with(this)
             .load(trackImage)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(8)))
             .placeholder(R.drawable.placeholder_image)
             .into(trackImageView)
     }

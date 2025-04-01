@@ -296,14 +296,15 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
     fun toTrack(track: Track){
         val intent = Intent(this, Audioplayer::class.java).apply {
-            putExtra("TRACK_IMAGE", track.trackImage)
+            /*putExtra("TRACK_IMAGE", track.trackImage)
             putExtra("TRACK_NAME", track.trackName)
             putExtra("ARTIST_NAME", track.artistName)
             putExtra("YEAR_NUMBER", track.yearNumber)
             putExtra("TRACK_DURATION", track.trackTime)
             putExtra("TRACK_GENRE", track.genre)
             putExtra("TRACK_COUNTRY",track.country)
-            putExtra("ALBUM_NAME",track.albumName)
+            putExtra("ALBUM_NAME",track.albumName)*/
+            putExtra("TRACK",track)
         }
         startActivity(intent)
     }

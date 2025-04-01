@@ -39,28 +39,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.06"/>
+                app:layout_constraintGuide_begin="24dp"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/rightBoardForText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.96"/>
+                app:layout_constraintGuide_end="16dp"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/leftBoardForText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.04"/>
+                app:layout_constraintGuide_begin="16dp"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/rightBoard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.94"/>
+                app:layout_constraintGuide_end="24dp"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/bottomBoard"
@@ -165,7 +165,7 @@
                 android:id="@+id/timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12.3dp"
+                android:layout_marginTop="12dp"
                 android:textSize="@dimen/audioplayer_current_time_text_size"
                 android:text="@string/random_time_delete_potom"
                 style="@style/TrackNameArtistStyle"

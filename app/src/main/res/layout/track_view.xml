@@ -17,7 +17,6 @@
         android:layout_width="@dimen/track_icon_size"
         android:layout_height="@dimen/track_icon_size"
         android:src="@color/black"
-        app:shapeAppearanceOverlay="@style/RoundedImageView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
