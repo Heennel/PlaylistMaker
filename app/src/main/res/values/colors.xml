@@ -4,7 +4,7 @@
     <color name="black_background">#1A1B22</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue_background_main">#3772E7</color>
-    <color name="icon_color">#1A1B22</color>
+    <color name="application_black">#1A1B22</color>
     <color name="grayEditText">#E6E8EB</color>
     <color name="grayTextOnEditText">#AEAFB4</color>
     <color name="grayText">#AEAFB4</color>
@@ -13,4 +13,7 @@
     <color name="switchBackgroundDark">#3772E7</color>
     <color name="switchBackgroundLight">#E6E8EB</color>
     <color name="switchCircleLight">#AEAFB4</color>
+    <color name="transparent">#00000000</color>
+    <color name="circleButtonColorLight">#401A1B22</color>
+    <color name="circleButtonColorDark">#40FFFFFF</color>
 </resources>

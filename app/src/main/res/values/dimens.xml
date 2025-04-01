@@ -34,4 +34,11 @@
     <dimen name="history_button_radius">54dp</dimen>
     <dimen name="history_button_text_size">14sp</dimen>
     <dimen name="max_heigth_history">590dp</dimen>
+    <dimen name="audioplayer_back_button_size">16dp</dimen>
+    <dimen name="track_name_text_size">22sp</dimen>
+    <dimen name="artist_name_text_size">14sp</dimen>
+    <dimen name="description_text_size">13sp</dimen>
+    <dimen name="audioplayer_button_padding">14dp</dimen>
+    <dimen name="audioplayer_current_time_text_size">14sp</dimen>
+    <dimen name="audioplayer_description_margin">17dp</dimen>
 </resources>

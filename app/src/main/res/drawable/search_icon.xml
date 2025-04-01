@@ -8,6 +8,6 @@
         android:left="@dimen/icon_search_horizontal_padding"
         android:top="@dimen/icon_search_vertical_padding"
         android:bottom="@dimen/icon_search_vertical_padding"
-        android:id="@+id/resetButton"
+        android:id="@+id/clearButton"
         />
 </layer-list>

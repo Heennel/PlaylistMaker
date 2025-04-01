@@ -21,4 +21,15 @@
     <string name="youSearched">Вы искали</string>
     <string name="clearStory">Очистить историю</string>
     <string name="url_iTunes">https://itunes.apple.com</string>
+    <string name="audioplayer_year_text">Год</string>
+    <string name="audioplayer_genre_text">Жанр</string>
+    <string name="audioplayer_country_text">Страна</string>
+    <string name="audioplayer_album_text">Альбом</string>
+    <string name="audioplayer_duration_name">Длительность</string>
+    <string name="audioplayer_pause_description">pause</string>
+    <string name="audioplayer_backButton_description">back</string>
+    <string name="audioplayer_trackImage_description">trackImage</string>
+    <string name="audioplayer_playlist_description">playlist</string>
+    <string name="audioplayer_pauseButton_description">pause</string>
+    <string name="random_time_delete_potom">0:29</string>
 </resources>

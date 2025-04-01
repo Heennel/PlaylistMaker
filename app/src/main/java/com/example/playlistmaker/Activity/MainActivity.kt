@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.Activity.SearchActivity.SearchActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.RecyclerView.ClickListener
 
 class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
