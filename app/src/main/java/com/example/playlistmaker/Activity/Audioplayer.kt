@@ -2,6 +2,7 @@ package com.example.playlistmaker.Activity
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -18,6 +19,11 @@ import com.example.playlistmaker.R
 import java.util.Locale
 
 class Audioplayer : AppCompatActivity() {
+
+    companion object {
+        private const val TRACK_KEY = "TRACK"
+    }
+
     private lateinit var backButton: ImageButton
 
     private lateinit var trackNameTextView: TextView
@@ -38,7 +44,7 @@ class Audioplayer : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-        val track = IntentCompat.getParcelableExtra(intent,"TRACK",Track::class.java)?:return
+        val track = IntentCompat.getParcelableExtra(intent, TRACK_KEY,Track::class.java)?:return
 
         val trackName = track.trackName
         val artistName = track.artistName
@@ -67,9 +73,14 @@ class Audioplayer : AppCompatActivity() {
             albumNameTextView.visibility = View.GONE
         }
 
+        val radiusInPx = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            8f,
+            this.resources.displayMetrics
+        ).toInt()
         Glide.with(this)
             .load(trackImage)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(8)))
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusInPx)))
             .placeholder(R.drawable.placeholder_image)
             .into(trackImageView)
     }

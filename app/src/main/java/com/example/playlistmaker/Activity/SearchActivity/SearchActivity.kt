@@ -34,10 +34,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.create
 
-private const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
-private const val TEXT_KEY = "TEXT_KEY"
-private const val STATUS_KEY = "STATUS_KEY"
 class SearchActivity : AppCompatActivity(), ClickListener {
+
+    companion object {
+        private const val TRACK_KEY = "TRACK"
+        private const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
+        private const val TEXT_KEY = "TEXT_KEY"
+        private const val STATUS_KEY = "STATUS_KEY"
+    }
 
     private lateinit var editTextTracks: EditText
     private lateinit var arrowBack: ImageView
@@ -296,15 +300,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     }
     fun toTrack(track: Track){
         val intent = Intent(this, Audioplayer::class.java).apply {
-            /*putExtra("TRACK_IMAGE", track.trackImage)
-            putExtra("TRACK_NAME", track.trackName)
-            putExtra("ARTIST_NAME", track.artistName)
-            putExtra("YEAR_NUMBER", track.yearNumber)
-            putExtra("TRACK_DURATION", track.trackTime)
-            putExtra("TRACK_GENRE", track.genre)
-            putExtra("TRACK_COUNTRY",track.country)
-            putExtra("ALBUM_NAME",track.albumName)*/
-            putExtra("TRACK",track)
+            putExtra(TRACK_KEY,track)
         }
         startActivity(intent)
     }
