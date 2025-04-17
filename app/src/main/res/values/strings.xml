@@ -31,5 +31,5 @@
     <string name="audioplayer_trackImage_description">trackImage</string>
     <string name="audioplayer_playlist_description">playlist</string>
     <string name="audioplayer_pauseButton_description">pause</string>
-    <string name="random_time_delete_potom">0:29</string>
+    <string name="null_time_track_duration">0:00</string>
 </resources>

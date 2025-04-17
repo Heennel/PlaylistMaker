@@ -5,5 +5,6 @@ enum class SearchStatus {
     FAILED_NO_FOUND,
     FOUND_TRACK_LIST,
     HISTORY_TRACK_LIST,
-    NOTHING;
+    NOTHING,
+    LOADING;
 }

@@ -143,4 +143,7 @@
         <item name="android:background">@drawable/circle_black</item>
         <item name="android:tint">@color/application_black</item>
     </style>
+    <style name="ProgressBar">
+        <item name="android:indeterminateTint">@color/white</item>
+    </style>
 </resources>
