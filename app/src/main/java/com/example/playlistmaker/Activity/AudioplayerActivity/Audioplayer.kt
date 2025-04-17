@@ -24,6 +24,8 @@ import java.util.Locale
 class Audioplayer : AppCompatActivity() {
 
     companion object {
+        private const val CHECKTIME_DELAY = 490L
+
         private const val TRACK_KEY = "TRACK"
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -57,7 +59,10 @@ class Audioplayer : AppCompatActivity() {
 
     private val updateTimer = object : Runnable {
         override fun run() {
-
+            val currentTime = mediaPlayer.currentPosition
+            timer.text = SimpleDateFormat("m:ss", Locale.getDefault())
+                .format(currentTime)
+            handler.postDelayed(this, CHECKTIME_DELAY)
         }
     }
 
@@ -93,6 +98,9 @@ class Audioplayer : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
+            playButton.setImageResource(R.drawable.play)
+            timer.text = resources.getString(R.string.null_time_track_duration)
+            handler.removeCallbacks(updateTimer)
         }
     }
     private fun playbackControl() {
@@ -101,6 +109,7 @@ class Audioplayer : AppCompatActivity() {
                 pausePlayer()
             }
             STATE_PREPARED, STATE_PAUSED -> {
+                playButton.setImageResource(R.drawable.play)
                 startPlayer()
             }
             else -> {
@@ -114,6 +123,7 @@ class Audioplayer : AppCompatActivity() {
     private fun startPlayer() {
         mediaPlayer.start()
         playButton.setImageResource(R.drawable.pause)
+        handler.post(updateTimer)
         playerState = STATE_PLAYING
     }
 
@@ -122,9 +132,6 @@ class Audioplayer : AppCompatActivity() {
         playButton.setImageResource(R.drawable.play)
         playerState = STATE_PAUSED
     }
-
-
-
 
     fun initViews(){
         progressBar = findViewById(R.id.progressBar)
@@ -192,6 +199,7 @@ class Audioplayer : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        handler.removeCallbacks(updateTimer)
         pausePlayer()
     }
 }
