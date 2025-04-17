@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Activity.Audioplayer">
+    tools:context=".Activity.AudioplayerActivity.Audioplayer">
 
     <ImageButton
         android:id="@+id/backButton"
@@ -21,12 +21,25 @@
         app:srcCompat="@drawable/arrow"
         tools:ignore="TouchTargetSizeCheck" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.3"
+        style="@style/ProgressBar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/nestedScrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        android:scrollbars="none"
         android:overScrollMode="never"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backButton">
 
@@ -39,47 +52,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="24dp"/>
+                app:layout_constraintGuide_begin="24dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/rightBoardForText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="16dp"/>
+                app:layout_constraintGuide_end="16dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/leftBoardForText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="16dp"/>
+                app:layout_constraintGuide_begin="16dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/rightBoard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="24dp"/>
+                app:layout_constraintGuide_end="24dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/bottomBoard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_end="20dp"/>
+                app:layout_constraintGuide_end="20dp" />
 
             <ImageView
-                android:scaleType="centerCrop"
                 android:id="@+id/trackImage"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:contentDescription="@string/audioplayer_trackImage_description"
-                app:layout_constraintDimensionRatio="1:1"
                 android:layout_marginTop="42dp"
+                android:contentDescription="@string/audioplayer_trackImage_description"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@id/rightBoard"
                 app:layout_constraintStart_toStartOf="@id/leftBoard"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <HorizontalScrollView
                 android:id="@+id/nameScroll"
@@ -93,11 +106,11 @@
 
                 <TextView
                     android:id="@+id/trackNameText"
+                    style="@style/TrackNameArtistStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/track_name_text_size"
-                    style="@style/TrackNameArtistStyle"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:textSize="@dimen/track_name_text_size" />
             </HorizontalScrollView>
 
             <HorizontalScrollView
@@ -112,11 +125,11 @@
 
                 <TextView
                     android:id="@+id/artistNameText"
+                    style="@style/TrackNameArtistStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/artist_name_text_size"
-                    style="@style/TrackNameArtistStyle"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:textSize="@dimen/artist_name_text_size" />
             </HorizontalScrollView>
 
             <ImageButton
@@ -128,139 +141,139 @@
                 android:contentDescription="@string/audioplayer_playlist_description"
                 android:padding="@dimen/audioplayer_button_padding"
                 android:src="@drawable/music"
-                app:layout_constraintEnd_toStartOf="@id/pause"
+                app:layout_constraintEnd_toStartOf="@id/playButton"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="@id/leftBoard"
                 app:layout_constraintTop_toBottomOf="@id/artistScroll"
-                app:tint="@color/white"/>
+                app:tint="@color/white" />
 
             <ImageButton
-                android:id="@+id/pause"
+                android:id="@+id/playButton"
+                style="@style/BigImageButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="38dp"
-                style="@style/BigImageButtonStyle"
                 android:contentDescription="@string/audioplayer_pauseButton_description"
                 android:padding="@dimen/audioplayer_button_padding"
-                android:src="@drawable/pause"
+                android:src="@drawable/play"
                 app:layout_constraintEnd_toStartOf="@id/like"
                 app:layout_constraintStart_toEndOf="@id/playlist"
-                app:layout_constraintTop_toBottomOf="@id/artistScroll"/>
+                app:layout_constraintTop_toBottomOf="@id/artistScroll" />
 
             <ImageButton
                 android:id="@+id/like"
+                style="@style/SmallImageButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="54dp"
-                style="@style/SmallImageButtonStyle"
                 android:contentDescription="@string/audioplayer_pause_description"
                 android:padding="@dimen/audioplayer_button_padding"
                 android:src="@drawable/heart"
                 app:layout_constraintBottom_toBottomOf="@id/playlist"
-                app:layout_constraintStart_toEndOf="@id/pause"
                 app:layout_constraintEnd_toStartOf="@id/rightBoard"
-                app:tint="@color/white"/>
+                app:layout_constraintStart_toEndOf="@id/playButton"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/timer"
+                style="@style/TrackNameArtistStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:text="@string/null_time_track_duration"
                 android:textSize="@dimen/audioplayer_current_time_text_size"
-                android:text="@string/random_time_delete_potom"
-                style="@style/TrackNameArtistStyle"
                 app:layout_constraintEnd_toStartOf="@id/rightBoard"
                 app:layout_constraintStart_toStartOf="@id/leftBoard"
-                app:layout_constraintTop_toBottomOf="@id/pause"/>
+                app:layout_constraintTop_toBottomOf="@id/playButton" />
 
             <TextView
                 android:id="@+id/trackDurationText"
+                style="@style/DescriptionTextStyleFixed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audioplayer_duration_name"
-                style="@style/DescriptionTextStyleFixed"
                 android:layout_marginTop="39dp"
+                android:text="@string/audioplayer_duration_name"
                 app:layout_constraintStart_toStartOf="@id/leftBoardForText"
-                app:layout_constraintTop_toBottomOf="@id/timer"/>
+                app:layout_constraintTop_toBottomOf="@id/timer" />
 
             <TextView
                 android:id="@+id/trackDurationTime"
+                style="@style/DescriptionTextStyleСhangeable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/DescriptionTextStyleСhangeable"
                 app:layout_constraintBottom_toBottomOf="@id/trackDurationText"
-                app:layout_constraintEnd_toEndOf="@id/rightBoardForText"/>
+                app:layout_constraintEnd_toEndOf="@id/rightBoardForText" />
 
             <TextView
                 android:id="@+id/albumText"
+                style="@style/DescriptionTextStyleFixed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/audioplayer_album_text"
-                style="@style/DescriptionTextStyleFixed"
                 app:layout_constraintStart_toStartOf="@id/leftBoardForText"
-                app:layout_constraintTop_toBottomOf="@id/trackDurationText"/>
+                app:layout_constraintTop_toBottomOf="@id/trackDurationText" />
 
             <TextView
                 android:id="@+id/albumName"
+                style="@style/DescriptionTextStyleСhangeable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/DescriptionTextStyleСhangeable"
                 app:layout_constraintBottom_toBottomOf="@id/albumText"
-                app:layout_constraintEnd_toEndOf="@id/rightBoardForText"/>
+                app:layout_constraintEnd_toEndOf="@id/rightBoardForText" />
 
             <TextView
                 android:id="@+id/yearText"
+                style="@style/DescriptionTextStyleFixed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/audioplayer_year_text"
-                style="@style/DescriptionTextStyleFixed"
                 app:layout_constraintStart_toStartOf="@id/leftBoardForText"
-                app:layout_constraintTop_toBottomOf="@id/albumText"/>
+                app:layout_constraintTop_toBottomOf="@id/albumText" />
 
             <TextView
                 android:id="@+id/yearNumber"
+                style="@style/DescriptionTextStyleСhangeable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/DescriptionTextStyleСhangeable"
                 app:layout_constraintBottom_toBottomOf="@id/yearText"
-                app:layout_constraintEnd_toEndOf="@id/rightBoardForText"/>
+                app:layout_constraintEnd_toEndOf="@id/rightBoardForText" />
 
             <TextView
                 android:id="@+id/genreText"
+                style="@style/DescriptionTextStyleFixed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/audioplayer_genre_text"
-                style="@style/DescriptionTextStyleFixed"
                 android:fontFamily="@font/ys_display_regular"
+                android:text="@string/audioplayer_genre_text"
                 app:layout_constraintStart_toStartOf="@id/leftBoardForText"
-                app:layout_constraintTop_toBottomOf="@id/yearText"/>
+                app:layout_constraintTop_toBottomOf="@id/yearText" />
 
             <TextView
                 android:id="@+id/genreName"
+                style="@style/DescriptionTextStyleСhangeable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/DescriptionTextStyleСhangeable"
                 app:layout_constraintBottom_toBottomOf="@id/genreText"
-                app:layout_constraintEnd_toEndOf="@id/rightBoardForText"/>
+                app:layout_constraintEnd_toEndOf="@id/rightBoardForText" />
 
             <TextView
                 android:id="@+id/countryText"
+                style="@style/DescriptionTextStyleFixed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/audioplayer_country_text"
-                style="@style/DescriptionTextStyleFixed"
                 app:layout_constraintBottom_toTopOf="@id/bottomBoard"
                 app:layout_constraintStart_toStartOf="@id/leftBoardForText"
                 app:layout_constraintTop_toBottomOf="@id/genreText"
-                app:layout_constraintVertical_bias="0.0"/>
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/countryName"
+                style="@style/DescriptionTextStyleСhangeable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/DescriptionTextStyleСhangeable"
                 app:layout_constraintBottom_toBottomOf="@id/countryText"
-                app:layout_constraintEnd_toEndOf="@id/rightBoardForText"/>
+                app:layout_constraintEnd_toEndOf="@id/rightBoardForText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -12,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +25,7 @@ import com.example.playlistmaker.API.TrackResponse
 import com.example.playlistmaker.API.iTunesApi
 import com.example.playlistmaker.R
 import com.example.playlistmaker.API.Track
-import com.example.playlistmaker.Activity.Audioplayer
+import com.example.playlistmaker.Activity.AudioplayerActivity.Audioplayer
 import com.example.playlistmaker.Activity.PLAYLIST_MAKER
 import com.example.playlistmaker.RecyclerView.ClickListener
 import com.example.playlistmaker.RecyclerView.HistoryAdapter
@@ -41,7 +44,13 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         private const val HISTORY_LIST_KEY = "HISTORY_LIST_KEY"
         private const val TEXT_KEY = "TEXT_KEY"
         private const val STATUS_KEY = "STATUS_KEY"
+        private const val CLICK_DELAY = 1000L
+        private const val REQUEST_DELAY = 2000L
     }
+    private var isClickAllowed = true
+
+    private val debounceHandler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { getTrack() }
 
     private lateinit var editTextTracks: EditText
     private lateinit var arrowBack: ImageView
@@ -61,6 +70,8 @@ class SearchActivity : AppCompatActivity(), ClickListener {
     private lateinit var clearHistoryButton: Button
     private lateinit var historyText: TextView
 
+    private lateinit var progressBar: ProgressBar
+
     private var activityStatus = SearchStatus.NOTHING
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -76,20 +87,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_search)
-
-        notFoundImage = findViewById(R.id.notFoundImage)
-        notFoundText = findViewById(R.id.notFoundText)
-        connectionFailedImage = findViewById(R.id.connectionFailedImage)
-        connectoinFailedText = findViewById(R.id.connectionFailedText)
-        reloadButton = findViewById(R.id.reloadButton)
-        connectionProblemsText = findViewById(R.id.connectionProblemsText)
-        historyRV = findViewById(R.id.historyRV)
-        foundRV = findViewById(R.id.trackRV)
-        clearSearchButton = findViewById(R.id.clearButton)
-        clearHistoryButton = findViewById(R.id.clearStoryButton)
-        historyText = findViewById(R.id.historyText)
-        editTextTracks = findViewById(R.id.editTextSearch)
-        arrowBack = findViewById(R.id.back)
+        initViews()
 
         historyRV.adapter = historyAdapter
         foundRV.adapter = foundAdapter
@@ -125,6 +123,7 @@ class SearchActivity : AppCompatActivity(), ClickListener {
                     }
                 } else {
                     clearSearchButton.visibility= View.VISIBLE
+                    searchDebounce()
                 }
             }
             override fun afterTextChanged(s: Editable?) {}
@@ -160,31 +159,38 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         }
     }
 
-
     private fun getTrack(){
-        val trackName = editTextTracks.text.toString()
-        iTunesApiService.getTrack(trackName).enqueue(object : Callback<TrackResponse> {
-            override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.isSuccessful) {
-                    trackList.clear()
-                    val responseList = response.body()?.results
-                    if (!responseList.isNullOrEmpty()) {
-                        trackList.addAll(responseList)
-                        foundAdapter.notifyDataSetChanged()
-                        setActivityStatus(SearchStatus.FOUND_TRACK_LIST)
+        if(editTextTracks.text.isNotEmpty()) {
+            setActivityStatus(SearchStatus.LOADING)
+            val trackName = editTextTracks.text.toString()
+            iTunesApiService.getTrack(trackName).enqueue(object : Callback<TrackResponse> {
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        trackList.clear()
+                        val responseList = response.body()?.results
+                        if (!responseList.isNullOrEmpty()) {
+                            trackList.addAll(responseList)
+                            foundAdapter.notifyDataSetChanged()
+                            setActivityStatus(SearchStatus.FOUND_TRACK_LIST)
+                        }
+                        if (trackList.isEmpty()) {
+                            setActivityStatus(SearchStatus.FAILED_NO_FOUND)
+                        }
+                    } else {
+                        setActivityStatus(SearchStatus.FAILED_NO_INTERNET)
                     }
-                    if (trackList.isEmpty()) {
-                        setActivityStatus(SearchStatus.FAILED_NO_FOUND)
-                    }
-                } else {
+                }
+
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     setActivityStatus(SearchStatus.FAILED_NO_INTERNET)
                 }
-            }
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                setActivityStatus(SearchStatus.FAILED_NO_INTERNET)
-            }
-        })
+            })
+        }
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -196,13 +202,18 @@ class SearchActivity : AppCompatActivity(), ClickListener {
             .apply()
     }
     override fun onClick(track: Track) {
-        toTrack(track)
-        val listUpdater = ListTrackUpdater(historyAdapter.historyTrackList)
-        listUpdater.update(track)
-        historyAdapter.notifyDataSetChanged()
-        sharedPreferences.edit()
-            .putString(HISTORY_LIST_KEY,createJsonFromArray(historyAdapter.historyTrackList.toArray()))
-            .apply()
+        if(clickAllower()) {
+            toTrack(track)
+            val listUpdater = ListTrackUpdater(historyAdapter.historyTrackList)
+            listUpdater.update(track)
+            historyAdapter.notifyDataSetChanged()
+            sharedPreferences.edit()
+                .putString(
+                    HISTORY_LIST_KEY,
+                    createJsonFromArray(historyAdapter.historyTrackList.toArray())
+                )
+                .apply()
+        }
     }
     fun createArrayFromJson(json: String):Array<Track>{
         return Gson().fromJson(json, Array<Track>::class.java)
@@ -214,94 +225,123 @@ class SearchActivity : AppCompatActivity(), ClickListener {
         when(status){
             SearchStatus.NOTHING -> {
                 activityStatus = SearchStatus.NOTHING
-
+                progressBar.visibility = View.GONE
                 foundRV.visibility = View.GONE
 
-                notFoundImage.visibility = View.GONE
-                notFoundText.visibility = View.GONE
-
-                reloadButton.visibility = View.GONE
-                connectoinFailedText.visibility = View.GONE
-                connectionFailedImage.visibility = View.GONE
-                connectionProblemsText.visibility = View.GONE
-
-                historyText.visibility = View.GONE
-                historyRV.visibility = View.GONE
-                clearHistoryButton.visibility = View.GONE
+                noFoundMessageHide()
+                connectionMessageHide()
+                historyHide()
             }
             SearchStatus.FOUND_TRACK_LIST -> {
                 activityStatus = SearchStatus.FOUND_TRACK_LIST
-
                 foundRV.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
 
-                notFoundImage.visibility = View.GONE
-                notFoundText.visibility = View.GONE
-
-                reloadButton.visibility = View.GONE
-                connectoinFailedText.visibility = View.GONE
-                connectionFailedImage.visibility = View.GONE
-                connectionProblemsText.visibility = View.GONE
-
-                historyText.visibility = View.GONE
-                historyRV.visibility = View.GONE
-                clearHistoryButton.visibility = View.GONE
+                noFoundMessageHide()
+                connectionMessageHide()
+                historyHide()
             }
 
             SearchStatus.FAILED_NO_INTERNET -> {
                 activityStatus = SearchStatus.FAILED_NO_INTERNET
                 foundRV.visibility = View.GONE
+                progressBar.visibility = View.GONE
 
-                notFoundImage.visibility = View.GONE
-                notFoundText.visibility = View.GONE
-
-                reloadButton.visibility = View.VISIBLE
-                connectoinFailedText.visibility = View.VISIBLE
-                connectionFailedImage.visibility = View.VISIBLE
-                connectionProblemsText.visibility = View.VISIBLE
-
-                historyText.visibility = View.GONE
-                historyRV.visibility = View.GONE
-                clearHistoryButton.visibility = View.GONE
+                noFoundMessageHide()
+                connectionMessageShow()
+                historyHide()
             }
             SearchStatus.FAILED_NO_FOUND -> {
                 activityStatus = SearchStatus.FAILED_NO_FOUND
                 foundRV.visibility = View.GONE
+                progressBar.visibility = View.GONE
 
-                notFoundImage.visibility = View.VISIBLE
-                notFoundText.visibility = View.VISIBLE
-
-                reloadButton.visibility = View.GONE
-                connectoinFailedText.visibility = View.GONE
-                connectionFailedImage.visibility = View.GONE
-                connectionProblemsText.visibility = View.GONE
-
-                historyText.visibility = View.GONE
-                historyRV.visibility = View.GONE
-                clearHistoryButton.visibility = View.GONE
+                noFoundMessageShow()
+                connectionMessageHide()
+                historyHide()
             }
 
             SearchStatus.HISTORY_TRACK_LIST -> {
                 activityStatus = SearchStatus.HISTORY_TRACK_LIST
                 foundRV.visibility = View.GONE
+                progressBar.visibility = View.GONE
 
-                notFoundImage.visibility = View.GONE
-                notFoundText.visibility = View.GONE
-
-                reloadButton.visibility = View.GONE
-                connectoinFailedText.visibility = View.GONE
-                connectionFailedImage.visibility = View.GONE
-                connectionProblemsText.visibility = View.GONE
-
-                historyText.visibility = View.VISIBLE
-                historyRV.visibility = View.VISIBLE
-                clearHistoryButton.visibility = View.VISIBLE
+                noFoundMessageHide()
+                connectionMessageHide()
+                historyShow()
+            }
+            SearchStatus.LOADING -> {
+                activityStatus = SearchStatus.LOADING
+                setActivityStatus(SearchStatus.NOTHING)
+                progressBar.visibility = View.VISIBLE
             }
         }
     }
     fun toTrack(track: Track){
         val intent = Intent(this, Audioplayer::class.java).apply {
-            putExtra(TRACK_KEY,track)
+            putExtra(TRACK_KEY,track.copy(music_url = track.music_url ?: ""))
         }
         startActivity(intent)
+    }
+    fun clickAllower(): Boolean{
+        val answer = isClickAllowed
+        if(isClickAllowed){
+            isClickAllowed = false
+            debounceHandler.postDelayed({isClickAllowed = true}, CLICK_DELAY)
+        }
+        return answer
+    }
+
+    fun searchDebounce(){
+        debounceHandler.removeCallbacks(searchRunnable)
+        debounceHandler.postDelayed(searchRunnable,REQUEST_DELAY)
+    }
+
+    fun historyHide(){
+        historyText.visibility = View.GONE
+        historyRV.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+    }
+    fun historyShow(){
+        historyText.visibility = View.VISIBLE
+        historyRV.visibility = View.VISIBLE
+        clearHistoryButton.visibility = View.VISIBLE
+    }
+    fun connectionMessageHide(){
+        reloadButton.visibility = View.GONE
+        connectoinFailedText.visibility = View.GONE
+        connectionFailedImage.visibility = View.GONE
+        connectionProblemsText.visibility = View.GONE
+    }
+    fun connectionMessageShow(){
+        reloadButton.visibility = View.VISIBLE
+        connectoinFailedText.visibility = View.VISIBLE
+        connectionFailedImage.visibility = View.VISIBLE
+        connectionProblemsText.visibility = View.VISIBLE
+    }
+    fun noFoundMessageHide(){
+        notFoundImage.visibility = View.GONE
+        notFoundText.visibility = View.GONE
+    }
+    fun noFoundMessageShow(){
+        notFoundImage.visibility = View.VISIBLE
+        notFoundText.visibility = View.VISIBLE
+    }
+
+    fun initViews(){
+        notFoundImage = findViewById(R.id.notFoundImage)
+        notFoundText = findViewById(R.id.notFoundText)
+        connectionFailedImage = findViewById(R.id.connectionFailedImage)
+        connectoinFailedText = findViewById(R.id.connectionFailedText)
+        reloadButton = findViewById(R.id.reloadButton)
+        connectionProblemsText = findViewById(R.id.connectionProblemsText)
+        historyRV = findViewById(R.id.historyRV)
+        foundRV = findViewById(R.id.trackRV)
+        clearSearchButton = findViewById(R.id.clearButton)
+        clearHistoryButton = findViewById(R.id.clearStoryButton)
+        historyText = findViewById(R.id.historyText)
+        editTextTracks = findViewById(R.id.editTextSearch)
+        arrowBack = findViewById(R.id.back)
+        progressBar = findViewById(R.id.progressBar)
     }
 }
